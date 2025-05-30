@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',  # Добавляем для TokenAuthentication
     'djoser',
     'api',
     'posts',
@@ -94,8 +95,21 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.TokenAuthentication',  # Используем TokenAuthentication
     ),
+}
+
+DJOSER = {
+    'LOGIN_FIELD': 'username',
+    'USER_ID_FIELD': 'id',
+    'SERIALIZERS': {
+        'user': 'rest_framework.serializers.UserSerializer',
+        'current_user': 'rest_framework.serializers.UserSerializer',
+    },
+    'PERMISSIONS': {
+        'user': ['rest_framework.permissions.IsAuthenticated'],
+        'user_list': ['rest_framework.permissions.IsAuthenticated'],
+    },
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
